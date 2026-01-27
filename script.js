@@ -7,6 +7,10 @@ function Book(title, author, pages, isRead) {
     id = crypto.randomUUID();
 }
 
+Book.prototype.toggleRead = function() {
+    this.isRead = !this.isRead;
+}
+
 const library = [];
 const container = document.querySelector(".container");
 
@@ -24,7 +28,7 @@ showButton.addEventListener("click", () => {
 });
 
 addBookButton.addEventListener("click", (event) => {
-    if(title.value === "" || author.value === "" || pages.value === "") {
+    if(title.value === "" || author.value === "" || pages.value <= 0) {
         return;
     }
     event.preventDefault();
@@ -62,10 +66,37 @@ function displayBooks() {
         const p2 = document.createElement("p");
         p2.textContent = `Finished Reading: ${book.isRead ? `Yes` : `No`}`;
 
+        const toggleBtn = document.createElement("button");
+        toggleBtn.classList.add("toggle");
+        toggleBtn.textContent = "Toggle Read";
+        toggleBtn.addEventListener("click", () => {
+            book.toggleRead();
+            p2.textContent = `Finished Reading: ${book.isRead ? `Yes` : `No`}`;
+        });
+
+
+        const removeBtn = document.createElement("button");
+        removeBtn.classList.add("remove");
+        removeBtn.textContent = "Remove";
+
+        removeBtn.addEventListener("click", () => {
+            let i = 0;
+            for(; i < library.length; i++) {
+                if(library[i] === book) break;
+            }
+
+            library.splice(i, 1);
+
+            displayBooks();
+        });
+
+
         card.appendChild(h2);
         card.appendChild(h3);
         card.appendChild(p1);
         card.appendChild(p2);
+        card.appendChild(toggleBtn);
+        card.appendChild(removeBtn);
 
         container.appendChild(card);
     }

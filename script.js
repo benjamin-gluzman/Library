@@ -1,15 +1,17 @@
-function Book(title, author, pages, isRead) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.isRead = isRead;
-    this.info = () => `${title} by ${author}, ${pages} pages, ${isRead ? `has been read` : `not read yet`}`;
-    id = crypto.randomUUID();
+class Book {
+    constructor(title, author, pages, isRead) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.isRead = isRead;
+        this.info = () => `${title} by ${author}, ${pages} pages, ${isRead ? `has been read` : `not read yet`}`;
+    }
+
+    toggleRead() {
+        this.isRead = !this.isRead;
+    }
 }
 
-Book.prototype.toggleRead = function() {
-    this.isRead = !this.isRead;
-}
 
 const library = [];
 const container = document.querySelector(".container");

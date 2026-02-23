@@ -18,7 +18,7 @@ const container = document.querySelector(".container");
 
 const showButton = document.querySelector(".showForm");
 const dialog = document.querySelector("dialog");
-const addBookButton = document.querySelector(".addBook");
+const form = document.querySelector("form");
 
 const title = document.querySelector("#title");
 const author = document.querySelector("#author");
@@ -29,11 +29,42 @@ showButton.addEventListener("click", () => {
     dialog.showModal();
 });
 
-addBookButton.addEventListener("click", (event) => {
-    if(title.value === "" || author.value === "" || pages.value <= 0) {
+
+form.addEventListener("submit", (event) => {
+    let valid = true;
+
+    // TITLE
+    if (!title.value.trim()) {
+        title.setCustomValidity("The title name must not be empty");
+        valid = false;
+    } else {
+        title.setCustomValidity("");
+    }
+
+    // AUTHOR
+    if (!author.value.trim()) {
+        author.setCustomValidity("The author name must not be empty");
+        valid = false;
+    } else {
+        author.setCustomValidity("");
+    }
+
+    // PAGES (minimum 1)
+    if (pages.value === "" || Number(pages.value) < 1) {
+        pages.setCustomValidity("There must be at least 1 page");
+        valid = false;
+    } else {
+        pages.setCustomValidity("");
+    }
+
+    if (!valid) {
+        event.preventDefault();
+        form.reportValidity(); // show all messages
         return;
     }
+
     event.preventDefault();
+
 
     addBookToLibrary(title.value, author.value, pages.value, isRead.checked);
     title.value = "";
